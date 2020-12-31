@@ -30,9 +30,9 @@ function moderation_sidebar_toolbar() {
   /** @var \Drupal\Core\Routing\AdminContext $admin_context */
   $admin_context = \Drupal::service('router.admin_context');
 
-  // @todo Support other entities. What's the generic way of doing this?
   /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
-  $entity = \Drupal::routeMatch()->getParameter('node');
+  $current_route = \Drupal::routeMatch();
+  $entity = $current_route->getParameter('node') ?: $current_route->getParameter('taxonomy_term');
 
   if (!($entity instanceof ContentEntityInterface) || $admin_context->isAdminRoute()) {
     $cacheability->applyTo($items['moderation_sidebar']);
@@ -120,6 +120,9 @@ function moderation_sidebar_toolbar() {
  */
 function moderation_sidebar_theme() {
   return [
+    'moderation_sidebar_container' => [
+      'render element' => 'element',
+    ],
     'moderation_sidebar_info' => [
       'variables' => [
         'state' => '',

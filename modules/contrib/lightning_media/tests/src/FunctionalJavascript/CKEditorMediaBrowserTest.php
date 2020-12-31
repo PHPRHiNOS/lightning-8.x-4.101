@@ -23,6 +23,11 @@ class CKEditorMediaBrowserTest extends WebDriverTestBase {
   /**
    * {@inheritdoc}
    */
+  protected $defaultTheme = 'stark';
+
+  /**
+   * {@inheritdoc}
+   */
   protected static $modules = [
     'image_widget_crop',
     'lightning_media_document',
@@ -288,7 +293,7 @@ class CKEditorMediaBrowserTest extends WebDriverTestBase {
     // Assert that we have a valid list of CKeditor instance IDs.
     /** @var array $editors */
     $editors = $session->evaluateScript('Object.keys(CKEDITOR.instances)');
-    $this->assertInternalType('array', $editors);
+    $this->assertSame('array', gettype($editors));
     $this->assertNotEmpty($editors);
 
     // Assert that the editor is ready.

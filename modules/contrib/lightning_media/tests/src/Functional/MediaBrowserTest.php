@@ -17,6 +17,11 @@ class MediaBrowserTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
+  protected $defaultTheme = 'stark';
+
+  /**
+   * {@inheritdoc}
+   */
   protected static $modules = [
     'block',
     'field_ui',
@@ -111,7 +116,7 @@ class MediaBrowserTest extends BrowserTestBase {
     $component = lightning_media_entity_get_form_display('node', $node_type)
       ->getComponent('field_foobar');
 
-    $this->assertInternalType('array', $component);
+    $this->assertSame('array', gettype($component));
     $this->assertSame('entity_browser_entity_reference', $component['type']);
     $this->assertSame('media_browser', $component['settings']['entity_browser']);
   }

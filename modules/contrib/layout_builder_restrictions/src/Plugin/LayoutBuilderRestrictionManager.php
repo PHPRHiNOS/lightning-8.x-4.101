@@ -64,12 +64,14 @@ class LayoutBuilderRestrictionManager extends DefaultPluginManager {
     foreach ($this->getDefinitions() as $restriction_definition) {
       $id = $restriction_definition['id'];
       // Handle plugins that are in existing config.
-      if ($config = $plugin_config[$id]) {
+      if ($plugin_config && !empty($plugin_config[$id])) {
+        $config = $plugin_config[$id];
         if ($config['enabled'] == FALSE && $get_disabled) {
           $plugin_list[$id] = [
             'weight' => (int) $config['weight'],
             'enabled' => (bool) $config['enabled'],
             'title' => $restriction_definition['title'],
+            'description' => $restriction_definition['description'],
           ];
         }
         elseif ($config['enabled'] == TRUE) {
@@ -77,6 +79,7 @@ class LayoutBuilderRestrictionManager extends DefaultPluginManager {
             'weight' => (int) $config['weight'],
             'enabled' => (bool) $config['enabled'],
             'title' => $restriction_definition['title'],
+            'description' => $restriction_definition['description'],
           ];
         }
       }
@@ -86,6 +89,7 @@ class LayoutBuilderRestrictionManager extends DefaultPluginManager {
           'weight' => 1,
           'enabled' => TRUE,
           'title' => $restriction_definition['title'],
+          'description' => $restriction_definition['description'],
         ];
       }
     }

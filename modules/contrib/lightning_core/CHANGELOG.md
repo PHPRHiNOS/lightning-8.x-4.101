@@ -1,3 +1,22 @@
+## 5.4.0
+* Internal changes for development and testing, but nothing that should affect
+  users of Lightning Core.
+
+## 5.3.0
+* Moved acquia_telemetry to its own project on drupal.org and added it as a dependency.
+* Constrained a dependency that could cause TypeErrors when updating Lightning. (Issue #3152653)
+
+## 5.2.0
+* Security updated Drupal core to 8.8.6.
+
+## 5.1.0
+* Updated Contact Storage to 1.0
+* Updated Drupal core to 8.8.5.
+* Updated Metatag to 1.13.
+* Updated Pathauto to 1.8.
+* Updated Redirect to 1.5.
+* Updated Token to 1.7.
+
 ## 5.0.0
 * Updated Drupal core to 8.8.0.
 * Fixed all known deprecations. (Issue #3096212)
