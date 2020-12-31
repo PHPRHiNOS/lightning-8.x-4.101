@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\simple_oauth_extras\Controller;
+namespace Drupal\simple_oauth\Controller;
 
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Config\ConfigFactoryInterface;
@@ -20,26 +20,36 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class Oauth2AuthorizeForm extends FormBase {
 
   /**
+   * The entity type manager.
+   *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
 
   /**
+   * The message factory.
+   *
    * @var \Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface
    */
   protected $messageFactory;
 
   /**
+   * The foundation factory.
+   *
    * @var \Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface
    */
   protected $foundationFactory;
 
   /**
+   * The authorization server.
+   *
    * @var \League\OAuth2\Server\AuthorizationServer
    */
   protected $server;
 
   /**
+   * The grant plugin manager.
+   *
    * @var \Drupal\simple_oauth\Plugin\Oauth2GrantManagerInterface
    */
   protected $grantManager;
@@ -133,9 +143,19 @@ class Oauth2AuthorizeForm extends FormBase {
     else {
       $grant_type = NULL;
     }
+    $client_uuid = $request->get('client_id');
+    $consumer_storage = $this->entityTypeManager->getStorage('consumer');
+    $client_drupal_entities = $consumer_storage
+      ->loadByProperties([
+        'uuid' => $client_uuid,
+      ]);
+    if (empty($client_drupal_entities)) {
+      throw OAuthServerException::invalidClient();
+    }
+    $client_drupal_entity = reset($client_drupal_entities);
     $this->server = $this
       ->grantManager
-      ->getAuthorizationServer($grant_type);
+      ->getAuthorizationServer($grant_type, $client_drupal_entity);
 
     // Transform the HTTP foundation request object into a PSR-7 object. The
     // OAuth library expects a PSR-7 request.
@@ -151,15 +171,6 @@ class Oauth2AuthorizeForm extends FormBase {
     $form = [
       '#type' => 'container',
     ];
-
-    $client_uuid = $request->get('client_id');
-    $client_drupal_entities = $manager->getStorage('consumer')->loadByProperties([
-      'uuid' => $client_uuid,
-    ]);
-    if (empty($client_drupal_entities)) {
-      throw OAuthServerException::invalidClient();
-    }
-    $client_drupal_entity = reset($client_drupal_entities);
 
     $cacheablity_metadata = new CacheableMetadata();
 

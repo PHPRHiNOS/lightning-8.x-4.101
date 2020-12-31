@@ -1,12 +1,12 @@
-name: Simple OAuth Extras (Deprecated)
+name: Simple OAuth Test
 type: module
-description: Deprecated. All functionality has been moved to simple_oauth.
+description: Test module for Simple OAuth
 core: 8.x
 core_version_requirement: '^8 || ^9'
-package: Authentication
-dependencies:
-  - simple_oauth:simple_oauth
+package: Testing
 hidden: true
+dependencies:
+  - simple_oauth
 
 # Information added by Drupal.org packaging script on 2020-04-30
 version: '8.x-4.5'
